@@ -1,0 +1,7 @@
+interface:
+  display_name: "Skill GitHub 发布助手"
+  short_description: "专业撰写 Skill README，并安全发布或同步到 GitHub"
+  default_prompt: "使用 $publishing-skills-to-github，为这个 Skill 撰写专业 README，并安全同步到 GitHub。"
+
+policy:
+  allow_implicit_invocation: true
