@@ -1,12 +1,14 @@
 <div align="center">
 
+{{GULIAI_LOGO_BLOCK}}
+
 # {{SKILL_DISPLAY_NAME}}
 
 **{{ONE_LINE_CHINESE_VALUE}}**
 
 {{OPTIONAL_ENGLISH_SUBTITLE}}
 
-{{TRUTHFUL_BADGES_ONLY}}
+{{VERSION_BADGE}} {{LANGUAGE_BADGE}} {{LICENSE_BADGE}} {{OPTIONAL_TRUTHFUL_BADGES}}
 
 </div>
 
@@ -94,3 +96,10 @@ git clone https://github.com/{{OWNER}}/{{REPOSITORY}}.git
 ---
 
 {{CLOSING_STATEMENT}}
+
+<!--
+GULIAI 品牌发布模式：仅在用户明确要求且 Logo 获授权时使用。
+GULIAI_LOGO_BLOCK 示例：<p><img src="{{GULIAI_LOGO_PATH}}" alt="GULIAI" width="220"></p>
+首屏顺序固定为 Logo、标题、中文价值主张、真实徽章；紧随其后保留“定位 / 不做什么”卡片。
+没有品牌要求时删除 GULIAI_LOGO_BLOCK，并保留中性 Hero。
+-->
