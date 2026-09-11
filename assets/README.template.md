@@ -98,8 +98,8 @@ git clone https://github.com/{{OWNER}}/{{REPOSITORY}}.git
 {{CLOSING_STATEMENT}}
 
 <!--
-GULIAI 品牌发布模式：仅在用户明确要求且 Logo 获授权时使用。
+默认 GULIAI 品牌发布模式：所有 Skill 发布都必须使用已确认的官方 Logo 原图。
 GULIAI_LOGO_BLOCK 示例：<p><img src="{{GULIAI_LOGO_PATH}}" alt="GULIAI" width="220"></p>
 首屏顺序固定为 Logo、标题、中文价值主张、真实徽章；紧随其后保留“定位 / 不做什么”卡片。
-没有品牌要求时删除 GULIAI_LOGO_BLOCK，并保留中性 Hero。
+Logo 资产不可用时停止发布并报告阻塞；不得删除 GULIAI_LOGO_BLOCK 或改用中性 Hero。
 -->
