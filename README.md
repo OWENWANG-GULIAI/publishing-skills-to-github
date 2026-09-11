@@ -1,10 +1,6 @@
-<p align="center">
-  <a href="https://github.com/OWENWANG-GULIAI">
-    <img src="https://raw.githubusercontent.com/OWENWANG-GULIAI/ppt-page-image-director/main/assets/guliai-logo-on-light.png" alt="GULIAI" width="300">
-  </a>
-</p>
-
 <div align="center">
+
+<p><img src="assets/guliai-logo-on-light.png" alt="GULIAI" width="220"></p>
 
 # Skill GitHub 发布助手
 
@@ -12,12 +8,13 @@
 
 Professional README and Safe GitHub Publishing for Agent Skills
 
-![Agent Skill](https://img.shields.io/badge/Agent-Skill-111827)
-![Language](https://img.shields.io/badge/docs-中文-EA580C)
-![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+![Version](https://img.shields.io/badge/version-2.0.0-0F6FAF)
+![Language](https://img.shields.io/badge/language-中文-EA580C)
+[![License: MIT](https://img.shields.io/badge/license-MIT-5E8F3A)](LICENSE)
 
 </div>
+
+---
 
 > **它是什么**：面向 Agent Skill 仓库的 README 写作、发布前审计和 GitHub 安全同步规范。<br>
 > **它不是什么**：不会绕过授权自动公开仓库，也不会替用户擅自变更 owner、可见性、许可证或 Git 历史。
