@@ -7,13 +7,16 @@
 - 更新已有仓库；
 - 创建新仓库；
 - 只优化仓库介绍页面；
+- 创建或同步多包 Skill 合集；
 - 修改 owner、名称、可见性或许可证——这些是独立变更。
 
 不能仅根据“发布”二字推断用户同意转移仓库、重命名、公开发布或强制推送。
 
 ## 2. 编辑前完整检查
 
-完整读取 `SKILL.md`、它引用的资料、脚本、测试、资源、元数据、当前 README、许可证、Git 状态、近期历史和远端配置。记录无关的已修改或已暂存内容，并保持不动。
+单 Skill 仓库：完整读取 `SKILL.md`、它引用的资料、脚本、测试、资源、元数据、当前 README、许可证、Git 状态、近期历史和远端配置。记录无关的已修改或已暂存内容，并保持不动。
+
+多包合集：完整读取根 README、`catalog.json`、`LICENSES.md`、各包的 `SKILL.md`、包级许可证、来源映射、引用资源、测试、Git 状态、近期历史和远端配置。根目录不应因缺少 `SKILL.md` 被当作失败；要确认每个目录包才是可安装单元。
 
 依据当前文件建立 README 规范中的事实清单。当 owner、可见性、默认分支、Release 或远端内容可能变化时，必须实时读取 GitHub 状态。
 
@@ -33,6 +36,18 @@
 - Markdown 链接检查；
 - 压缩包完整性检查；
 - 基于差异的隐私和凭证检查。
+
+合集审计使用：
+
+```bash
+python3 scripts/audit_skill_repository.py \
+  --collection-root <target-skill-collection> \
+  --repo-owner <github-owner> \
+  --repo-name <repository-name> \
+  --json
+```
+
+它会检查根 README、`catalog.json`、`LICENSES.md`、每个声明包的 `SKILL.md` 与 MIT 声明是否匹配；仍需运行每个有测试或验证器的包的相关检查。
 
 必须阅读检查输出，不能只看退出码。发现失败后修复根因并重新运行。
 
@@ -61,6 +76,8 @@
 - README 来自预期分支并正常呈现；
 - README 链接和徽章指向真实资源；
 - GitHub 展示的许可证与仓库文件一致。
+
+对于合集，还要回读 `catalog.json`、`LICENSES.md` 和至少一个包路径，确认根目录没有错误地作为单一 Skill 或统一许可证发布。
 
 最终报告仓库 URL、提交标识、变更文件、执行过的检查和剩余边界。本地提交成功、命令返回成功或界面提示成功，都不能单独证明发布完成。
 

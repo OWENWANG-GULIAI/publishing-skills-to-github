@@ -52,6 +52,44 @@ function audit(directory) {
   return spawnSync('python3', [auditScript, '--skill-root', directory, '--repo-owner', 'OWENWANG-GULIAI', '--repo-name', 'demo-skill', '--json'], { encoding: 'utf8' });
 }
 
+function collectionFixture() {
+  const directory = mkdtempSync(path.join(os.tmpdir(), 'skill-collection-'));
+  mkdirSync(path.join(directory, 'skills', 'demo-skill'), { recursive: true });
+  writeFileSync(path.join(directory, 'README.md'), `# Demo Skills
+
+## 快速开始
+
+\`\`\`bash
+git clone https://github.com/OWENWANG-GULIAI/demo-skills.git
+\`\`\`
+
+## 技能目录
+
+查看 [catalog](catalog.json)。
+
+## 许可说明
+
+每个包保留各自许可证，详见 [LICENSES](LICENSES.md)。
+`);
+  writeFileSync(path.join(directory, 'LICENSES.md'), '# 许可说明\n\n仅提供包级许可。\n');
+  writeFileSync(path.join(directory, 'catalog.json'), JSON.stringify({
+    schema_version: '1.0',
+    packages: [{
+      id: 'demo-skill',
+      path: 'skills/demo-skill',
+      source_repository: 'https://github.com/OWENWANG-GULIAI/demo-skill',
+      license: 'MIT',
+    }],
+  }));
+  writeFileSync(path.join(directory, 'skills', 'demo-skill', 'SKILL.md'), '---\nname: demo-skill\ndescription: Use when testing a collection audit.\n---\n');
+  writeFileSync(path.join(directory, 'skills', 'demo-skill', 'LICENSE'), 'MIT License\n');
+  return directory;
+}
+
+function auditCollection(directory) {
+  return spawnSync('python3', [auditScript, '--collection-root', directory, '--repo-owner', 'OWENWANG-GULIAI', '--repo-name', 'demo-skills', '--json'], { encoding: 'utf8' });
+}
+
 test('仓库包含可发布 Skill 的完整结构', () => {
   for (const relativePath of ['SKILL.md', 'README.md', 'LICENSE', 'agents/openai.yaml', 'assets/README.template.md', 'references/readme-standard.md', 'references/publishing-workflow.md', 'references/privacy-and-license.md', 'scripts/audit_skill_repository.py']) {
     assert.equal(existsSync(path.join(root, relativePath)), true, `missing ${relativePath}`);
@@ -73,6 +111,17 @@ test('审计器接受结构完整且有事实依据的仓库', (t) => {
   const result = audit(directory);
   assert.equal(result.status, 0, result.stderr || result.stdout);
   assert.equal(JSON.parse(result.stdout).ok, true);
+});
+
+test('审计器接受包级许可的 Skill 合集而不要求根 SKILL 或根 LICENSE', (t) => {
+  const directory = collectionFixture();
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const result = auditCollection(directory);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.ok, true);
+  assert.equal(payload.mode, 'collection');
+  assert.equal(payload.checks.packages, 1);
 });
 
 test('审计器拒绝旧 owner、失效链接和敏感信息', (t) => {

@@ -105,6 +105,7 @@ flowchart LR
 - 重写过于简单或已经过期的 GitHub README。
 - GitHub 账号或仓库改名后检查旧链接。
 - 公开发布前检查隐私信息和许可证边界。
+- 把多个已公开的 Skill 汇总为一个保留包级边界的合集仓库。
 
 ## 示例
 
@@ -119,6 +120,8 @@ flowchart LR
 | 输入 | 本地 Skill、目标 GitHub 仓库或新建仓库意图、用户授权范围 |
 | 输出 | 专业 README、审计结果、准确提交、远端验证信息 |
 | 可选上下文 | 指定 owner、仓库名、可见性、许可证和提交身份 |
+
+对于多包合集，输入还包括每个包的来源、路径、许可证和维护策略；输出增加 `catalog.json`、`LICENSES.md` 与包级校验结论。
 
 ## 仓库结构
 
@@ -153,6 +156,7 @@ publishing-skills-to-github/
 - 旧 owner 与失效本地链接；
 - 邮箱、手机号、本机路径和凭证形态；
 - README 核心结构缺失。
+- 多包合集的目录、来源、包级许可证与根目录边界。
 
 运行测试：
 
@@ -169,6 +173,18 @@ python3 scripts/audit_skill_repository.py \
   --repo-name example-repository \
   --json
 ```
+
+审计多包合集：
+
+```bash
+python3 scripts/audit_skill_repository.py \
+  --collection-root /path/to/skill-collection \
+  --repo-owner example-owner \
+  --repo-name example-collection \
+  --json
+```
+
+合集模式不要求根 `SKILL.md` 或根 `LICENSE`；它要求根 `README.md`、`catalog.json`、`LICENSES.md`，并逐项验证所列子包的 `SKILL.md` 与许可证声明。
 
 审计器返回 `0` 表示通过，返回 `1` 表示发现需要处理的问题，参数错误返回 `2`。
 
