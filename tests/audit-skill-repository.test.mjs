@@ -124,6 +124,15 @@ test('审计器接受包级许可的 Skill 合集而不要求根 SKILL 或根 LI
   assert.equal(payload.checks.packages, 1);
 });
 
+test('审计器接受居中的 HTML 一级标题', (t) => {
+  const directory = collectionFixture();
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const readmePath = path.join(directory, 'README.md');
+  writeFileSync(readmePath, readFileSync(readmePath, 'utf8').replace('# Demo Skills', '<h1 align="center">Demo Skills</h1>'));
+  const result = auditCollection(directory);
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+});
+
 test('审计器拒绝旧 owner、失效链接和敏感信息', (t) => {
   const directory = fixture(validReadme.replace('OWENWANG-GULIAI/demo-skill', 'old-owner/demo-skill').replace('[Skill](SKILL.md)', '[Missing](missing.md)'));
   t.after(() => rmSync(directory, { recursive: true, force: true }));

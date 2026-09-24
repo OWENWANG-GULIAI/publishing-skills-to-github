@@ -79,6 +79,13 @@ def normalized_headings(readme: str) -> list[str]:
     return headings
 
 
+def has_h1(readme: str) -> bool:
+    return bool(
+        re.search(r"(?im)^#\s+\S", readme)
+        or re.search(r"(?ims)^\s*<h1(?:\s+[^>]*)?>\s*\S.*?</h1>\s*$", readme)
+    )
+
+
 def audit_readme(root: Path, owner: str, repo: str, errors: list[dict], warnings: list[dict]) -> None:
     readme_path = root / "README.md"
     if not readme_path.is_file():
@@ -91,7 +98,7 @@ def audit_readme(root: Path, owner: str, repo: str, errors: list[dict], warnings
         if not any(any(variant in heading for variant in variants) for heading in headings):
             errors.append(issue("readme-section", f"README is missing the professional section: {key}.", "README.md"))
 
-    if not re.search(r"(?im)^#\s+\S", readme):
+    if not has_h1(readme):
         errors.append(issue("readme-title", "README must have one clear H1 title.", "README.md"))
 
     if not re.search(r"```(?:bash|sh|shell|text)?\s*\n[\s\S]*?```", readme, re.IGNORECASE):
@@ -149,7 +156,7 @@ def audit_collection_readme(root: Path, owner: str, repo: str, errors: list[dict
         if not any(any(variant in heading for variant in variants) for heading in headings):
             errors.append(issue("readme-section", f"Collection README is missing the required section: {key}.", "README.md"))
 
-    if not re.search(r"(?im)^#\s+\S", readme):
+    if not has_h1(readme):
         errors.append(issue("readme-title", "README must have one clear H1 title.", "README.md"))
     if not re.search(r"```(?:bash|sh|shell|text)?\s*\n[\s\S]*?```", readme, re.IGNORECASE):
         warnings.append(issue("readme-example", "README has no fenced command or invocation example.", "README.md"))
